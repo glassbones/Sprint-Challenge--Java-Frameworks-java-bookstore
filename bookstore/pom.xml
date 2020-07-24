@@ -12,10 +12,10 @@
     <artifactId>bookstore</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>bookstore</name>
-    <description>Bookstore project for Spring Boot</description>
+    <description>Sprint Challenge for Java Frameworks</description>
 
     <properties>
-        <java.version>14</java.version>
+        <java.version>11</java.version>
     </properties>
 
     <dependencies>
@@ -40,6 +40,11 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <!--            <scope>runtime</scope>-->
+        </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
         </dependency>
 
         <dependency>
@@ -91,10 +96,29 @@
     </dependencies>
 
     <build>
+        <finalName>javasprint8893</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+            <!-- Heroku Maven Plugin Configuration -->
+            <plugin>
+                <groupId>com.heroku.sdk</groupId>
+                <artifactId>heroku-maven-plugin</artifactId>
+                <version>3.0.2</version>
+                <configuration>
+                    <appName>${project.build.finalName}</appName>
+                    <includeTarget>false</includeTarget>
+                    <includes>
+                        <include>${project.build.directory}/${project.build.finalName}.jar</include>
+                    </includes>
+                    <jdkVersion>${java.version}</jdkVersion>
+                    <processTypes>
+                        <web>java $JAVA_OPTS -Dserver.port=$PORT -jar target/${project.build.finalName}.jar</web>
+                    </processTypes>
+                </configuration>
             </plugin>
         </plugins>
     </build>
